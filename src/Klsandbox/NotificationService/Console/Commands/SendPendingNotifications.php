@@ -45,6 +45,12 @@ class SendPendingNotifications extends Command
                 // TODO: Fix this
                 $sent = true;
             } elseif ($notificationRequest->channel == 'Sms') {
+                if (!$smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $notificationRequest->site, $this))
+                {
+                    $this->error('failed validation');
+                    continue;
+                }
+
                 $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $notificationRequest->site, $this);
                 if ($response) {
                     $sent = true;
