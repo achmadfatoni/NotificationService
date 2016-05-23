@@ -9,7 +9,6 @@ use Mail;
 
 class SendPendingNotifications extends Command
 {
-
     protected $name = 'notifications:sendpending';
     protected $description = 'Send pending notifications. Supports email and sms.';
 
@@ -20,7 +19,7 @@ class SendPendingNotifications extends Command
         $unsentNotificationsQuery = NotificationRequest::forSite()
             ->where('sent', '=', false);
 
-        $this->comment("Unsent notifications - count :" . $unsentNotificationsQuery->count());
+        $this->comment('Unsent notifications - count :' . $unsentNotificationsQuery->count());
 
         $smsSender = new SmsSender();
 
@@ -45,8 +44,7 @@ class SendPendingNotifications extends Command
                 // TODO: Fix this
                 $sent = true;
             } elseif ($notificationRequest->channel == 'Sms') {
-                if (!$smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $notificationRequest->site, $this))
-                {
+                if (!$smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $notificationRequest->site, $this)) {
                     $this->error('failed validation');
                     continue;
                 }
@@ -55,7 +53,7 @@ class SendPendingNotifications extends Command
                 if ($response) {
                     $sent = true;
                     $notificationRequest->response_text = $response;
-                }else {
+                } else {
                     $this->error('Notification not sent');
                 }
             }
@@ -64,5 +62,4 @@ class SendPendingNotifications extends Command
             $notificationRequest->save();
         }
     }
-
 }
