@@ -20,7 +20,6 @@ use App;
  * @property boolean $sent
  * @property string $response_text
  * @property integer $response_code
- *
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereSiteId($value)
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereId($value)
@@ -32,14 +31,11 @@ use App;
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereSent($value)
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereResponseText($value)
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereResponseCode($value)
- *
  * @property integer $from_user_id
  * @property integer $to_user_id
  * @property-read \App\Models\User $toUser
- *
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereFromUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereToUserId($value)
- *
  * @property-read \Klsandbox\SiteModel\Site $site
  * @mixin \Eloquent
  */
