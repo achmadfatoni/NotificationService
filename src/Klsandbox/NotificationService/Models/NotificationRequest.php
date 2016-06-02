@@ -59,11 +59,8 @@ class NotificationRequest extends Model
                 $item->from_user_id = $userClass::admin()->id;
             }
 
-            if (!$item->target_id) {
-                App::abort(500, 'Invalid Notification');
-
-                return false;
-            }
+            assert($item->target_id);
+            assert($item->to_user_id);
 
             return true;
         });
