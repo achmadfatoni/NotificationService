@@ -4,7 +4,6 @@ namespace Klsandbox\NotificationService\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Auth;
-use App;
 
 /**
  * Klsandbox\NotificationService\Models\NotificationRequest
