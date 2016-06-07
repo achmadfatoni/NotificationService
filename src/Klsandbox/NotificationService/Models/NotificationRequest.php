@@ -37,6 +37,7 @@ use Auth;
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereToUserId($value)
  * @property-read \Klsandbox\SiteModel\Site $site
  * @mixin \Eloquent
+ * @property-read \App\Models\User $fromUser
  */
 class NotificationRequest extends Model
 {
