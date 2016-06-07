@@ -74,6 +74,11 @@ class NotificationRequest extends Model
         return $this->belongsTo(config('auth.model'), 'to_user_id');
     }
 
+    public function fromUser()
+    {
+        return $this->belongsTo(config('auth.model'), 'from_user_id');
+    }
+
     public function site()
     {
         return $this->belongsTo('Klsandbox\SiteModel\Site', 'site_id');
