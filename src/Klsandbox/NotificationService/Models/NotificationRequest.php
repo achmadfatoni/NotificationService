@@ -2,6 +2,7 @@
 
 namespace Klsandbox\NotificationService\Models;
 
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 
@@ -43,7 +44,7 @@ class NotificationRequest extends Model
 {
     use \Klsandbox\SiteModel\SiteExtensions;
 
-    protected $fillable = ['target_id', 'route', 'channel', 'to_user_id'];
+    protected $fillable = ['target_id', 'route', 'channel', 'to_user_id', 'to_customer_id'];
 
     //
 
@@ -69,6 +70,11 @@ class NotificationRequest extends Model
     public function toUser()
     {
         return $this->belongsTo(config('auth.model'), 'to_user_id');
+    }
+
+    public function toCustomer()
+    {
+        return $this->belongsTo(Customer::class, 'to_customer_id');
     }
 
     public function fromUser()
