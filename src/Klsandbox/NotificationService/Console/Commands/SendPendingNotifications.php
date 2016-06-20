@@ -56,6 +56,23 @@ class SendPendingNotifications extends Command
                 } else {
                     $this->error('Notification not sent');
                 }
+
+                if ($notificationRequest->to_customer_id) {
+                    if (!$smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toCustomer, $notificationRequest->site, $this)) {
+                        $this->error('failed validation');
+                        continue;
+                    }
+
+                    $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toCustomer, $notificationRequest->site, $this);
+                    if ($response) {
+                        $sent = true;
+                        $notificationRequest->response_text = $response;
+                    } else {
+                        $this->error('Notification not sent');
+                    }
+
+                }
+
             }
 
             $notificationRequest->sent = $sent;
