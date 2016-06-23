@@ -70,9 +70,7 @@ class SendPendingNotifications extends Command
                     } else {
                         $this->error('Notification not sent');
                     }
-
                 }
-
             }
 
             $notificationRequest->sent = $sent;
