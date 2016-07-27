@@ -45,8 +45,6 @@ use Auth;
  */
 class NotificationRequest extends Model
 {
-    use \Klsandbox\SiteModel\SiteExtensions;
-
     protected $fillable = ['target_id', 'route', 'channel', 'to_user_id', 'to_customer_id'];
 
     //
@@ -85,8 +83,4 @@ class NotificationRequest extends Model
         return $this->belongsTo(config('auth.model'), 'from_user_id');
     }
 
-    public function site()
-    {
-        return $this->belongsTo('Klsandbox\SiteModel\Site', 'site_id');
-    }
 }
