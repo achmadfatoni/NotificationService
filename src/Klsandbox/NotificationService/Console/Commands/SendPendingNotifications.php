@@ -16,8 +16,7 @@ class SendPendingNotifications extends Command
     {
         $this->comment('Sending notifications');
 
-        $unsentNotificationsQuery = NotificationRequest::forSite()
-            ->where('sent', '=', false);
+        $unsentNotificationsQuery = NotificationRequest::where('sent', '=', false);
 
         $this->comment('Unsent notifications - count :' . $unsentNotificationsQuery->count());
 
