@@ -36,7 +36,6 @@ use Auth;
  * @property-read \App\Models\User $toUser
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereFromUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\Klsandbox\NotificationService\Models\NotificationRequest whereToUserId($value)
- * @property-read \Klsandbox\SiteModel\Site $site
  * @mixin \Eloquent
  * @property-read \App\Models\User $fromUser
  * @property integer $to_customer_id
