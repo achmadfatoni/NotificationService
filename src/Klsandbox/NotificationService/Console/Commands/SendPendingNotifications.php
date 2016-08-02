@@ -43,7 +43,7 @@ class SendPendingNotifications extends Command
                 // TODO: Fix this
                 $sent = true;
             } elseif ($notificationRequest->channel == 'Sms') {
-                $validate = $smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $notificationRequest->site, $this);
+                $validate = $smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $this);
                 if ($validate === null) {
                     continue;
                 } elseif (!$validate) {
@@ -51,7 +51,7 @@ class SendPendingNotifications extends Command
                     continue;
                 }
 
-                $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $notificationRequest->site, $this);
+                $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $this);
                 if ($response) {
                     $sent = true;
                     $notificationRequest->response_text = $response;
@@ -60,12 +60,12 @@ class SendPendingNotifications extends Command
                 }
 
                 if ($notificationRequest->to_customer_id) {
-                    if (!$smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toCustomer, $notificationRequest->site, $this)) {
+                    if (!$smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toCustomer, $this)) {
                         $this->error('failed validation');
                         continue;
                     }
 
-                    $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toCustomer, $notificationRequest->site, $this);
+                    $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toCustomer, $this);
                     if ($response) {
                         $sent = true;
                         $notificationRequest->response_text = $response;
