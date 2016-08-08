@@ -18,8 +18,7 @@ class SendPendingNotifications extends Command
 
         $limit = $this->argument('limit');
 
-        if ($limit)
-        {
+        if ($limit) {
             $this->comment('Limit ' . $limit);
         }
 
@@ -34,7 +33,7 @@ class SendPendingNotifications extends Command
         $quota = $limit;
 
         foreach ($unsentNotificationsQuery->get() as $notificationRequest) {
-            $this->comment("id:$notificationRequest->target_id name:$notificationRequest->route");
+            $this->comment("id:$notificationRequest->id target_id:$notificationRequest->target_id name:$notificationRequest->route");
 
             $sent = false;
             if ($notificationRequest->channel == 'Email') {
@@ -52,7 +51,15 @@ class SendPendingNotifications extends Command
                 // TODO: Fix this
                 $sent = true;
             } elseif ($notificationRequest->channel == 'Sms') {
-                $validate = $smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $this);
+                $targetUser = null;
+
+                if ($notificationRequest->to_customer_id) {
+                    $targetUser = $notificationRequest->toCustomer;
+                } else {
+                    $targetUser = $notificationRequest->toUser;
+                }
+
+                $validate = $smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $targetUser, $this);
                 if ($validate === null) {
                     continue;
                 } elseif (!$validate) {
@@ -60,35 +67,19 @@ class SendPendingNotifications extends Command
                     continue;
                 }
 
-                if ($quota == 0)
-                {
+                if ($quota == 0) {
                     $this->comment('Quota exhausted');
                     break;
                 }
 
                 $quota--;
 
-                $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $this);
+                $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $targetUser, $this);
                 if ($response) {
                     $sent = true;
                     $notificationRequest->response_text = $response;
                 } else {
                     $this->error('Notification not sent');
-                }
-
-                if ($notificationRequest->to_customer_id) {
-                    if (!$smsSender->validate($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toCustomer, $this)) {
-                        $this->error('failed validation');
-                        continue;
-                    }
-
-                    $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toCustomer, $this);
-                    if ($response) {
-                        $sent = true;
-                        $notificationRequest->response_text = $response;
-                    } else {
-                        $this->error('Notification not sent');
-                    }
                 }
             }
 
