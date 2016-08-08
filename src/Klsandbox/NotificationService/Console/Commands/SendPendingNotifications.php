@@ -9,12 +9,19 @@ use Mail;
 
 class SendPendingNotifications extends Command
 {
-    protected $name = 'notifications:sendpending';
+    protected $signature = 'notifications:sendpending {limit?}';
     protected $description = 'Send pending notifications. Supports email and sms.';
 
     public function fire()
     {
         $this->comment('Sending notifications');
+
+        $limit = $this->argument('limit');
+
+        if ($limit)
+        {
+            $this->comment('Limit ' . $limit);
+        }
 
         $unsentNotificationsQuery = NotificationRequest::where('sent', '=', false);
 
@@ -23,6 +30,8 @@ class SendPendingNotifications extends Command
         $smsSender = new SmsSender();
 
         $smsSender->getRouter()->controller('', '\App\Services\SmsController');
+
+        $quota = $limit;
 
         foreach ($unsentNotificationsQuery->get() as $notificationRequest) {
             $this->comment("id:$notificationRequest->target_id name:$notificationRequest->route");
@@ -50,6 +59,14 @@ class SendPendingNotifications extends Command
                     $this->error('failed validation');
                     continue;
                 }
+
+                if ($quota == 0)
+                {
+                    $this->comment('Quota exhausted');
+                    break;
+                }
+
+                $quota--;
 
                 $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $notificationRequest->toUser, $this);
                 if ($response) {
