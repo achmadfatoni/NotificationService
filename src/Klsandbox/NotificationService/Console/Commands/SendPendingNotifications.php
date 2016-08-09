@@ -72,7 +72,7 @@ class SendPendingNotifications extends Command
                     break;
                 }
 
-                $quota--;
+                --$quota;
 
                 $response = $smsSender->send($notificationRequest->route, $notificationRequest->target_id, $targetUser, $this);
                 if ($response) {

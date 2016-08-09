@@ -81,5 +81,4 @@ class NotificationRequest extends Model
     {
         return $this->belongsTo(config('auth.model'), 'from_user_id');
     }
-
 }
